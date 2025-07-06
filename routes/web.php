@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layouts.form');
 });
 
 Auth::routes();
@@ -33,4 +33,13 @@ Route::middleware(['auth', 'doctor'])->group(function () {
     Route::post('/horario', [App\Http\Controllers\Doctor\HorarioController::class, 'store']);
     
 
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/reservarcitas/create', [App\Http\Controllers\AppointmentController::class, 'create']);
+    Route::post('/reservarcitas', [App\Http\Controllers\AppointmentController::class, 'store']);
+    Route::post('/miscitas', [App\Http\Controllers\AppointmentController::class, 'index']);
+    //JSON
+    Route::get('/especialidades/{specialty}/medicos', [App\Http\Controllers\Api\SpecialtyController::class, 'doctor']);
+    Route::get('/horario/horas', [App\Http\Controllers\Api\HorarioController::class, 'hours']);
 });

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Models\User; // Assuming User model is used for doctors
 use App\Http\Controllers\Controller;
+use App\Models\Specialty;
 
 class DoctorController extends Controller
 {
@@ -22,7 +23,9 @@ class DoctorController extends Controller
      */
     public function create()
     {
-        return view('doctors.create');
+
+        $specialties = Specialty::all();
+        return view('doctors.create', compact('specialties'));
     }
 
     /**
@@ -54,7 +57,7 @@ class DoctorController extends Controller
 
         $this->validate($request, $rules, $messages);
 
-        User::create(
+        $user = User::create(
             $request->only('name', 'email', 'cedula', 'address', 'phone') 
             + 
             [
@@ -62,6 +65,8 @@ class DoctorController extends Controller
                 'password' => bcrypt($request->input('password')) // Default password, change as needed
              ]   
         );
+
+        $user->specialties()->attach($request->input('specialties'));
         $notification = 'El doctor ha sido creado correctamente.';
 
         return redirect('/medicos')->with(compact('notification'));
@@ -81,7 +86,10 @@ class DoctorController extends Controller
     public function edit(string $id)
     {
         $doctor = User::findOrFail($id);
-        return view('doctors.edit', compact('doctor'));
+
+        $specialties = Specialty::all();
+        $specialty_ids = $doctor->specialties()->pluck('specialties.id');
+        return view('doctors.edit', compact('doctor', 'specialties', 'specialty_ids'));
     }
 
     /**
@@ -123,6 +131,8 @@ class DoctorController extends Controller
        
         $user->fill($data);
         $user->save();
+        $user->specialties()->sync($request->input('specialties'));
+
         $notification = 'La información del doctor se ha actualizado correctamente.';
 
         return redirect('/medicos')->with(compact('notification'));

@@ -35,7 +35,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'pivot'
     ];
+
+    public function specialties(){
+        return $this->belongsToMany(Specialty::class)->withTimestamps();
+    }
+
 
     /**
      * Get the attributes that should be cast.

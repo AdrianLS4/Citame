@@ -46,12 +46,12 @@
           </li>
           @else
             <li class="nav-item">
-              <a class="nav-link " href="pacientes">
+              <a class="nav-link " href="/reservarcitas/create">
                 <i class="fas fa-calendar-plus text-default"></i> Reservar Cita
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link " href="pacientes">
+              <a class="nav-link " href="/miscitas">
                 <i class="fas fa-clock text-success"></i> Mis Citas
               </a>
             </li>

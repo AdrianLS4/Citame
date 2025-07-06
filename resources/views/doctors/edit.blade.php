@@ -1,7 +1,10 @@
 
 
 @extends('layouts.panel')
-
+@section('styles')
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+@endsection
 @section('content')
 
           <div class="card shadow">
@@ -33,6 +36,16 @@
                     <label for="name">Nombre</label>
                     <input type="text" class="form-control" id="name" name="name" value="{{old('name', $doctor->name)}}" placeholder="Nombre Completo del Doctor">
                     </div>
+
+                    <div class="form-group">
+                        <label for="specialties">Especialidades</label>
+                        <select name="specialties[]" id="specialties" class="form-control selectpicker" data-style="btn-primary" title="Seleccionar Especialidades" required multiple>
+                        @foreach ($specialties as $especialidad)
+                          <option value="{{$especialidad->id}}">{{$especialidad->name}}</option>
+                        @endforeach
+                        </select>
+                    </div>
+
                     <div class="form-group">
                     <label for="cedula">Cedula</label>
                     <input type="text" class="form-control" id="cedula" name="cedula" rows="3" value="{{old('cedula',$doctor->cedula)}}" placeholder="12345678">
@@ -63,4 +76,12 @@
                 </div>
             </div>
        
+@endsection
+@section('scripts')
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+  <script>
+    $(document).ready(()=>{});
+    $('#specialties').selectpicker('val', @json($specialty_ids));
+  </script>
 @endsection
